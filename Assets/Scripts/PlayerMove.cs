@@ -2,26 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class Playermove : MonoBehaviour
 {
     [SerializeField]
     private float fireRate = 0.2f;
     [SerializeField]
     private float speed = 5f;
     [SerializeField]
-    private Transform bulletPosition = null;
+    private Transform bulletposition = null;
     [SerializeField]
-    private GameObject bulletPrefab = null;
+    private GameObject bulletprefab = null;
+    private GameManager gameManager = null;
 
     private Rigidbody2D rigid = null;
     private Vector2 targetPosition = Vector2.zero;
-
-    // Start is called before the first frame update
-    void Start() 
+    void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
+        gameManager = FindObjectOfType<GameManager>();
         StartCoroutine(Fire());
-
     }
 
     // Update is called once per frame
@@ -36,12 +35,17 @@ public class PlayerMove : MonoBehaviour
     }
     private IEnumerator Fire()
     {
-        while(true)
+        while (true)
         {
-            GameObject newbullet = Instantiate(bulletPrefab, bulletPosition);
-            newbullet.transform.position = bulletPosition.position;
-            newbullet.transform.SetParent(null);
-            yield return new WaitForSeconds(1f);
+           GameObject newBullet = Instantiate(bulletprefab, bulletposition);
+            newBullet.transform.position = bulletposition.position;
+            newBullet.transform.SetParent(null);
+            yield return new WaitForSeconds(fireRate);
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        gameManager.Dead();
+        
     }
 }
