@@ -6,10 +6,16 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject enemyCroisant;
+
+    public Vector2 MinPosition { get; private set; }
+    public Vector2 MaxPosition { get; private set; }
+
     private int score = 0;
     private int life = 3;
     void Start()
     {
+        MinPosition = new Vector2(-7f, -14f);
+        MaxPosition = new Vector2(7f, 14f);
         StartCoroutine(SpawnCroisant());
     }
     public void Addsocre(int addscore)
